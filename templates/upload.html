@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Dashboard | Placement System</title>
+  <style>
+    /* --- CSS Reset --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* --- Base Styles & Typography --- */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f8f9fa; /* Light gray background */
+      color: #212529;
+      line-height: 1.6;
+    }
+
+    /* --- Header / Navigation --- */
+    .main-header {
+      background-color: #ffffff;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-content h1 {
+      font-size: 1.5rem;
+      color: #343a40;
+    }
+
+    /* --- Button Styles --- */
+    .btn {
+      padding: 0.65rem 1.25rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: all 0.2s ease-in-out;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-danger { /* Logout Button Style */
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    .btn-secondary { /* View Details Button */
+      background: transparent;
+      color: #007bff;
+      border: 1px solid #007bff;
+    }
+
+    .btn-secondary:hover {
+      background: #007bff;
+      color: white;
+    }
+
+    /* --- Page Container --- */
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    /* --- Content Panels --- */
+    .content-panel {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+
+    .content-panel h2 {
+      color: #343a40;
+      border-bottom: 2px solid #f1f3f5;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.75rem;
+    }
+
+    /* --- Form Styling --- */
+    form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      color: #495057;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="file"],
+    textarea {
+      display: block;
+      width: 100%;
+      padding: 0.85rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: 0;
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    }
+    
+    input[type="file"] {
+      padding: 0.5rem; /* File inputs are styled differently */
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    /* --- Company Card Grid --- */
+    .company-list {
+      display: grid;
+      /* Creates a responsive grid: 
+         - On small screens: 1 column
+         - On larger screens: Fills container with cards ~320px wide
+      */
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .company-card {
+      background: #fff;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+      overflow: hidden; /* Contains the image */
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column; /* Ensures footer is always at bottom */
+    }
+
+    .company-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-image-container {
+      width: 100%;
+      height: 200px; /* Fixed height for image area */
+      overflow: hidden;
+      background: #f4f4f4;
+    }
+    
+    .company-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensures image covers area without distortion */
+    }
+
+    .card-content {
+      padding: 1.5rem;
+      flex-grow: 1; /* Pushes footer down */
+    }
+
+    .card-content h3 {
+      color: #007bff;
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+
+    .card-content p {
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+      color: #495057;
+      line-height: 1.5;
+    }
+    
+    .card-content p strong {
+        color: #212529; /* Darker text for labels */
+    }
+    
+    .skills-p {
+        font-weight: bold;
+        color: #212529;
+    }
+    .skills-p span {
+        font-weight: normal;
+        color: #6c757d;
+        font-style: italic;
+    }
+
+    .card-footer {
+      padding: 1rem 1.5rem;
+      background-color: #fcfdff;
+      border-top: 1px solid #f1f3f5;
+      margin-top: auto; /* Aligns footer to bottom */
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .main-header {
+        padding: 1rem;
+      }
+      .header-content h1 {
+        font-size: 1.2rem;
+      }
+      .container {
+        margin-top: 1rem;
+      }
+      .content-panel {
+        padding: 1rem;
+      }
+      .company-list {
+        /* On mobile, stack to one column */
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="main-header">
+    <div class="header-content">
+      <h1>Teacher Dashboard</h1>
+      <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div class="content-panel">
+      <h2>Upload New Company</h2>
+      <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+        
+        <label for="name">Company Name:</label>
+        <input type="text" id="name" name="name" required placeholder="Enter company name">
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required placeholder="Enter company address">
+
+        <label for="contact">Contact:</label>
+        <input type="text" id="contact" name="contact" required placeholder="Enter contact information">
+
+        <label for="skills">Required Skills (separated by commas):</label>
+        <textarea id="skills" name="skills" rows="3" placeholder="e.g., Python, Communication, Data Analysis, Git"></textarea>
+
+        <label for="image">Company Image:</label>
+        <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/gif">
+
+        <input type="submit" value="Upload Company" class="btn btn-primary">
+      </form>
+    </div>
+
+    <div class="content-panel">
+      <h2>Your Uploaded Companies</h2>
+      
+      {% if companies %}
+        <div class="company-list">
+          
+          {% for comp in companies %}
+            <div class="company-card">
+              
+              {% if comp['image'] %}
+                <div class="card-image-container">
+                  <img src="{{ url_for('static', filename='uploads/' ~ comp['image']) }}" alt="{{ comp['name'] }} image">
+                </div>
+              {% endif %}
+              
+              <div class="card-content">
+                <h3>{{ comp['name'] }}</h3>
+                <p><strong>Address:</strong> {{ comp['address'] }}</p>
+                <p><strong>Contact:</strong> {{ comp['contact'] }}</p>
+                <p class="skills-p"><strong>Skills:</strong> 
+                   <span>{{ comp['skills'] if comp['skills'] else 'N/A' }}</span>
+                </p>
+              </div>
+              
+              <div class="card-footer">
+                 <a href="{{ url_for('company_details', company_id=comp['id']) }}" class="btn btn-secondary">View Details</a>
+              </div>
+
+            </div>
+          {% endfor %}
+          
+        </div>
+      {% else %}
+        <p>No companies uploaded yet.</p>
+      {% endif %}
+      
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log("Teacher Dashboard page loaded");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Assessment Results | Placement System</title>
+  <style>
+    /* --- CSS Reset --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* --- Base Styles & Typography --- */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f8f9fa; /* Light gray background */
+      color: #212529;
+      line-height: 1.6;
+    }
+
+    /* --- Header / Navigation --- */
+    .main-header {
+      background-color: #ffffff;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid #e9ecef;
+      margin-bottom: 2rem;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-content h1 {
+      font-size: 1.5rem;
+      color: #343a40;
+    }
+    
+    .header-nav {
+        flex-grow: 1;
+        margin: 0 2rem;
+    }
+    
+    .header-nav a {
+        font-weight: 500;
+        font-size: 1rem;
+        color: #495057;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        transition: background-color 0.2s ease;
+    }
+    
+    .header-nav a:hover {
+        background-color: #f1f3f5;
+    }
+    
+    .header-nav a.active {
+        color: #007bff;
+        font-weight: 600;
+    }
+
+    /* --- Button Styles --- */
+    .btn {
+      padding: 0.65rem 1.25rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: all 0.2s ease-in-out;
+      text-align: center;
+    }
+
+    .btn-danger { /* Logout Button Style */
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    /* --- Page Container --- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* --- Content Panel --- */
+    .content-panel {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+
+    .content-panel h2 {
+      color: #343a40;
+      border-bottom: 2px solid #f1f3f5;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.75rem;
+      text-align: left; /* Align title left instead of center */
+    }
+
+    /* --- Modern Table Style --- */
+    .results-table-wrapper {
+        width: 100%;
+        overflow-x: auto; /* Ensures table scrolls horizontally on small screens if needed */
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    
+    thead tr {
+      background-color: transparent;
+      border-bottom: 2px solid #dee2e6;
+    }
+
+    th {
+      padding: 1rem;
+      text-align: left;
+      font-size: 0.9rem;
+      color: #495057;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+    
+    tbody tr {
+        border-bottom: 1px solid #e9ecef;
+        transition: background-color 0.2s ease;
+    }
+    
+    tbody tr:last-child {
+        border-bottom: none;
+    }
+    
+    tbody tr:hover {
+      background-color: #f8f9fa; /* Subtle hover for table row */
+    }
+    
+    td {
+      padding: 1.25rem 1rem;
+      color: #212529;
+      vertical-align: middle;
+      font-size: 1rem;
+    }
+    
+    .score-cell {
+        font-weight: 700;
+        color: #007bff;
+        font-size: 1.1rem;
+    }
+    
+    .empty-state {
+        text-align: center; 
+        padding: 3rem 1rem; 
+        font-size: 1.1rem; 
+        color: #6c757d;
+    }
+
+    /* --- Improved Responsive Stacking --- */
+    @media (max-width: 768px) {
+      /* Hide the table header on mobile */
+      thead {
+        display: none;
+      }
+      
+      /* Make table elements block, but wrap row as a "card" */
+      tbody, tr, td {
+        display: block;
+        width: 100%;
+      }
+      
+      tr {
+        margin-bottom: 1.5rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      }
+      
+      /* All cells in a card lose their individual borders */
+      td {
+        border: none;
+        border-bottom: 1px solid #e9ecef; /* Separator between "fields" in the card */
+        position: relative;
+        padding: 1rem;
+        padding-left: 40%; /* Make space for the label */
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+      }
+      
+      tr td:last-child {
+        border-bottom: none; /* No border for the last item in the card */
+      }
+
+      /* Use the data-label attribute to create the label */
+      td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 40%;
+        padding-left: 1rem;
+        font-weight: 600;
+        color: #495057;
+        text-align: left;
+      }
+      
+      .score-cell {
+          font-size: 1.05rem; /* Slightly adjust font for mobile */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="main-header">
+    <div class="header-content">
+      <h1>Student Dashboard</h1>
+      <nav class="header-nav">
+        <a href="{{ url_for('resume') }}">My Dashboard</a>
+        <a href="{{ url_for('student_results') }}" class="active">My Results</a>
+      </nav>
+      <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="content-panel">
+      <h2>My Assessment Results</h2>
+
+      {% if res|length == 0 %}
+        <p class="empty-state">No results available. Please take an assessment from your dashboard.</p>
+      {% else %}
+        <div class="results-table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Company Name</th>
+                <th>Score</th>
+                <th>Date & Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in res %}
+              <tr>
+                <td data-label="Company">{{ r['company_name'] }}</td>
+                <td data-label="Score" class="score-cell">{{ r['score'] }}/10</td>
+                <td data-label="Date">{{ r['timestamp'] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log("Student results page loaded");
+    });
+  </script>
+</body>
+</html>

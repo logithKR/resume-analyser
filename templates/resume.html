@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upload Resume | Placement Monitoring System</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: #f5f7fa;
+      padding: 30px;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    
+    h2 {
+      text-align: center;
+      color: #2563eb;
+      margin: 20px 0;
+      font-weight: 600;
+    }
+    
+    .upload-section {
+      background: #f8fafc;
+      padding: 25px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      border: 1px solid #e2e8f0;
+    }
+    
+    form {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+    
+    .file-input-wrapper {
+      position: relative;
+      margin: 15px auto;
+      max-width: 400px;
+    }
+    
+    input[type="file"] {
+      padding: 12px;
+      border: 2px dashed #cbd5e1;
+      border-radius: 6px;
+      width: 100%;
+      background: #fff;
+      cursor: pointer;
+      transition: border 0.3s;
+    }
+    
+    input[type="file"]:hover {
+      border-color: #93c5fd;
+    }
+    
+    input[type="submit"] {
+      background: #2563eb;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+    
+    input[type="submit"]:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      margin-top: 15px;
+      font-size: 0.95rem;
+      resize: vertical;
+      background: #f8fafc;
+    }
+    
+    .company-info {
+      background: #f8fafc;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      position: relative;
+    }
+    
+    .company-info img {
+      max-width: 120px;
+      max-height: 60px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+    }
+    
+    .company-info p {
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+    
+    .btn-wrapper {
+      margin-top: 15px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    a.btn {
+      background: #2563eb;
+      padding: 10px 18px;
+      border-radius: 6px;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 500;
+      display: inline-block;
+    }
+    
+    a.btn:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+    
+    .company-details {
+      margin-bottom: 20px;
+    }
+    /* --- Header / Navigation --- */
+    .main-header {
+      background-color: #ffffff;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid #e9ecef;
+      margin-bottom: 2rem;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-content h1 {
+      font-size: 1.5rem;
+      color: #343a40;
+    }
+    
+    .header-nav {
+        flex-grow: 1;
+        margin: 0 2rem;
+    }
+    
+    .header-nav a {
+        font-weight: 500;
+        font-size: 1rem;
+        color: #495057;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        transition: background-color 0.2s ease;
+    }
+    
+    .header-nav a:hover {
+        background-color: #f1f3f5;
+    }
+    
+    .header-nav a.active { /* For other pages, not this one */
+        color: #007bff;
+        font-weight: 600;
+    }
+
+    /* --- Button Styles --- */
+    .btn {
+      padding: 0.65rem 1.25rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: all 0.2s ease-in-out;
+      text-align: center;
+    }
+
+    .btn-danger { /* Logout Button Style */
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+    .no-match {
+      text-align: center;
+      padding: 20px;
+      color: #64748b;
+      font-style: italic;
+    }
+    
+    strong {
+      color: #1e293b;
+    }
+  </style>
+</head>
+<body>
+   <header class="main-header">
+    <div class="header-content">
+      <h1>Student Dashboard</h1>
+      <nav class="header-nav">
+        <a href="{{ url_for('resume') }}">My Dashboard</a>
+        <a href="{{ url_for('student_results') }}">My Results</a>
+      </nav>
+      <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+    </div>
+  </header>
+  <div class="container">
+    <h2>Upload Your Resume</h2>
+    
+    <div class="upload-section">
+      <form action="{{ url_for('upload_resume') }}" method="POST" enctype="multipart/form-data">
+        <label for="resume">Select Resume (PDF or Image):</label>
+        <div class="file-input-wrapper">
+          <input type="file" name="resume" id="resume" accept=".pdf,.png,.jpg,.jpeg" required>
+        </div>
+        <input type="submit" value="Upload & Extract Skills">
+      </form>
+    </div>
+
+    {% if extracted_skills %}
+      <h2>Extracted Skills</h2>
+      <textarea rows="4" readonly>{{ extracted_skills }}</textarea>
+    {% endif %}
+
+    {% if companies %}
+      <h2>Matching Companies</h2>
+      {% for company in companies %}
+      <div class="company-info">
+        <div class="company-details">
+          {% if company['image'] %}
+            <img src="{{ url_for('static', filename='uploads/' ~ company['image']) }}" alt="{{ company['name'] }} image">
+          {% endif %}
+          
+          <p><strong>Address:</strong> {{ company['address'] }}</p>
+          <p><strong>Contact:</strong> {{ company['contact'] }}</p>
+          <p><strong>Required Skills:</strong> {{ company['skills'] }}</p>
+        </div>
+        
+        <div class="btn-wrapper">
+          <a href="{{ url_for('assessment', company_id=company['id']) }}" class="btn">Take Assessment</a>
+        </div>
+      </div>
+      {% endfor %}
+    {% elif extracted_skills %}
+      <p class="no-match">No matching companies found based on your extracted skills.</p>
+    {% endif %}
+  </div>
+</body>
+</html>

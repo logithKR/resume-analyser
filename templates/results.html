@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Results | Placement Monitoring System</title>
+  <style>
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background: #f2f2f2;
+      color: #333;
+      padding: 1rem;
+    }
+    .container {
+      width: 95%;
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #3498db;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    thead {
+      background: #3498db;
+      color: #fff;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    tr:hover {
+      background: #f1f1f1;
+    }
+    @media(max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead tr {
+        display: none;
+      }
+      td {
+        position: relative;
+        padding-left: 50%;
+        border: none;
+        border-bottom: 1px solid #ddd;
+      }
+      td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 45%;
+        padding-left: 0.5rem;
+        font-weight: bold;
+      }
+    }
+  </style>
+</head>
+<body>
+   <header class="main-header">
+    <div class="header-content">
+      <h1>Student Dashboard</h1>
+      <nav class="header-nav">
+        <a href="{{ url_for('resume') }}">My Dashboard</a>
+        <a href="{{ url_for('student_results') }}">My Results</a>
+      </nav>
+      <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+    </div>
+  </header>
+  <div class="container">
+    <h2>Assessment Results</h2>
+    {% if res|length == 0 %}
+      <p>No results available.</p>
+    {% else %}
+      <table>
+        <thead>
+          <tr>
+            {% if user_type == 'teacher' %}
+              <th>Student Name</th>
+            {% endif %}
+            <th>Company Name</th>
+            <th>Score</th>
+            <th>Date & Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in res %}
+          <tr>
+            {% if user_type == 'teacher' %}
+              <td data-label="Student Name">{{ r['student_name'] }}</td>
+            {% endif %}
+            <td data-label="Company Name">{{ r['company_name'] }}</td>
+            <td data-label="Score">{{ r['score'] }}/10</td>
+            <td data-label="Date & Time">{{ r['timestamp'] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+  <script>
+    // JavaScript for results page: additional functionality (e.g., sorting or filtering) can be implemented here.
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log("Results page loaded");
+      // Additional interactive features can be added here.
+    });
+  </script>
+</body>
+</html>
