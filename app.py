@@ -23,8 +23,8 @@ UPLOAD_FOLDER = os.path.join('static', 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Gemini API key
-GEMINI_API_KEY = "AIzaSyABGNvp0TMDQEtVbRM26s253rHsv8VesmQ"
-genai.configure(api_key=GEMINI_API_KEY)
+GEMINI_API_KEY = "AIzaSyBItOsOgTyA6Y-cvA-hOK-mlmAf4yzwjEw"
+genai.configure(api_key=GEMINI_API_KEY, transport='rest')
 
 generation_config = {
     "temperature": 1,
@@ -40,7 +40,7 @@ generation_config = {
 # Let's target a known multimodal-capable model.
 # NOTE: If 'gemini-1.5-flash' gives an error, change it back, but this is the correct family.
 model = genai.GenerativeModel(
-    model_name="gemini-2.0-flash-exp",  # Change to "gemini-1.5-flash" or "gemini-pro" if needed
+    model_name="gemini-2.5-flash",  # Change to "gemini-1.5-flash" or "gemini-pro" if needed
     generation_config=generation_config,
 )
 
@@ -164,11 +164,17 @@ def generate_questions(company_skills):
             continue
     return questions
 
-def skills_match(student_skills, company_skills):
-    """Return True if at least one skill (case-insensitive) matches. (Unchanged)"""
-    student_list = [s.strip().lower() for s in student_skills.split(',') if s.strip()]
-    company_list = [s.strip().lower() for s in company_skills.split(',') if s.strip()]
-    return bool(set(student_list) & set(company_list))
+def skills_match(student_skill_set, company_skills_str):
+    """
+    Efficiently checks for matches between a student's parsed skill set 
+    and a company's comma-separated skill string.
+    student_skill_set: set of lowercase strings
+    company_skills_str: string (CSV)
+    """
+    if not company_skills_str:
+        return False
+    company_list = [s.strip().lower() for s in company_skills_str.split(',') if s.strip()]
+    return bool(student_skill_set & set(company_list))
 
 # -----------------------------------------------
 # NEW ALL-IN-ONE SKILL EXTRACTOR FUNCTION
@@ -375,9 +381,11 @@ def resume():
         user = conn.execute("SELECT * FROM users WHERE id = ?", (session['user_id'],)).fetchone()
 
         if skills:
+            # Pre-parse user skills once
+            user_skill_set = set([s.strip().lower() for s in skills.split(',') if s.strip()])
             all_companies = conn.execute("SELECT * FROM companies").fetchall()
             for comp in all_companies:
-                if comp['skills'] and skills_match(skills, comp['skills']):
+                if comp['skills'] and skills_match(user_skill_set, comp['skills']):
                     companies.append(comp)
 
     conn.close()
@@ -439,10 +447,12 @@ def upload_resume():
         user = conn.execute("SELECT * FROM users WHERE id = ?", (session['user_id'],)).fetchone()
 
         if extracted_skills:
+            # Pre-parse extracted skills once
+            extracted_skill_set = set([s.strip().lower() for s in extracted_skills.split(',') if s.strip()])
             all_companies = conn.execute("SELECT * FROM companies").fetchall()
             print(f"🏢 Checking {len(all_companies)} companies for skill matches...")
             for comp in all_companies:
-                if comp['skills'] and skills_match(extracted_skills, comp['skills']):
+                if comp['skills'] and skills_match(extracted_skill_set, comp['skills']):
                     print(f"✅ Match found: {comp['name']}")
                     matching_companies.append(comp)
         else:

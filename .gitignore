@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+venv/
+database.db
+static/uploads/
+reproduce_error.py
+test_rest.py
+test_transport.py
+models.txt
