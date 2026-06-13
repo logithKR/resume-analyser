@@ -7,3 +7,4 @@ reproduce_error.py
 test_rest.py
 test_transport.py
 models.txt
+.env

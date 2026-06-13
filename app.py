@@ -9,7 +9,9 @@ import time      # For polling the file upload status
 from email.mime.text import MIMEText
 from flask import Flask, request, redirect, url_for, render_template, session, flash
 import google.generativeai as genai
+from dotenv import load_dotenv
 
+load_dotenv()
 # REMOVED: All pyresparser and nltk and pdfplumber imports are gone.
 # We only need the core libraries.
 
@@ -22,8 +24,10 @@ DATABASE = 'database.db'
 UPLOAD_FOLDER = os.path.join('static', 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Gemini API key
-GEMINI_API_KEY = "AIzaSyBItOsOgTyA6Y-cvA-hOK-mlmAf4yzwjEw"
+# Gemini API key - Loaded from .env file
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if not GEMINI_API_KEY:
+    raise ValueError("No GEMINI_API_KEY set for Flask application. Did you forget to add it to .env?")
 genai.configure(api_key=GEMINI_API_KEY, transport='rest')
 
 generation_config = {
